@@ -22,7 +22,7 @@ Assuming `mini.dmp` is a minidump captured on ARM/Linux, application libraries (
 
  java -jar bakebread.jar -Dc -CS ./out -CC core.dump -P app/lib/unstripped:device/sysroot -Vdh -Mea -Or mini.dmp
 
-displays crash information (-Dc), splits the dump into individual streams and sections into `out` (-CS) and converts the minidump into `core.dump` (-CC). A "courtesy" GDB session loading script will be written to `core.dmp.dbg`. Differences between host and target binaries, if encountered, would be summarized in `core.dmp.diff`.
+displays crash information (-Dc), splits the dump into individual streams and sections into `out` (-CS) and converts the minidump into `core.dump` (-CC). A "courtesy" GDB session loading script will be written to `core.dump.gdb`. Differences between host and target binaries, if encountered, would be summarized in `core.dump.diff`.
 
 ## Caveats
 
