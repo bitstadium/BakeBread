@@ -1,0 +1,33 @@
+BakeBread Tamien, an executable and linkable file differencing tool
+
+Copyright (c) Microsoft Corporation
+
+All rights reserved. Licensed under the MIT license.
+
+WHAT'S IT?
+
+If you are here, you are either a random visitor or curious about
+the O(N log N) differencing algorithm BakeBread uses to compare
+code sections in the dump and on the host. This is a stub of a help
+page for the com.skype.research.exediff.Main entry point, intended
+to be a general purpose file comparator. Unfortunately, heuristics
+suitable for limited areas of ARM EABI executable code have proven
+to be less meaningful for general purpose file comparison. If you'd
+like to improve their stability, odds are you'll end up with a fast
+comparator of very large files of more or less expected formats. As
+of now, this entry point is not recommended for ordinary use.
+
+USAGE
+ 
+ java -jar bakebread.jar -1 Thomas/libc.so Jeremy/libc.so
+
+OPTIONS
+
+ The following Bakebread option families apply:
+ 
+ -S, --soft                 Similarity/proximity thresholds.
+ -M, --modules              Module analysis options.
+ 
+ See the main Bakebread documentation by running the following:
+ 
+    java -jar bakebread.jar

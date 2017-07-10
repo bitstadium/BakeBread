@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~
+  ~ Licensed under the MIT license.
+  -->
+
+<project name="bakebread" default="all">
+  
+  
+  <property file="bakebread.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.ear"/>
+    <include name="*.egg"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module bakebread -->
+  
+  <dirname property="module.bakebread.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.bakebread" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
+  
+  <property name="bakebread.output.dir" value="${module.bakebread.basedir}/out/production/bakebread"/>
+  <property name="bakebread.testoutput.dir" value="${module.bakebread.basedir}/out/test/bakebread"/>
+  
+  <path id="bakebread.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="bakebread.module.production.classpath"/>
+  
+  <path id="bakebread.runtime.production.module.classpath">
+    <pathelement location="${bakebread.output.dir}"/>
+  </path>
+  
+  <path id="bakebread.module.classpath">
+    <pathelement location="${bakebread.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit.jar"/>
+  </path>
+  
+  <path id="bakebread.runtime.module.classpath">
+    <pathelement location="${bakebread.testoutput.dir}"/>
+    <pathelement location="${bakebread.output.dir}"/>
+    <pathelement location="${idea.home}/lib/junit.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.bakebread">
+    <patternset refid="ignored.files"/>
+    <exclude name="out/**"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.bakebread">
+    <patternset refid="excluded.from.module.bakebread"/>
+  </patternset>
+  
+  <path id="bakebread.module.sourcepath">
+    <dirset dir="${module.bakebread.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="bakebread.module.test.sourcepath">
+    <dirset dir="${module.bakebread.basedir}">
+      <include name="test"/>
+      <include name="testdata"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.bakebread" depends="compile.module.bakebread.production,compile.module.bakebread.tests" description="Compile module bakebread"/>
+  
+  <target name="compile.module.bakebread.production" description="Compile module bakebread; production classes">
+    <mkdir dir="${bakebread.output.dir}"/>
+    <javac destdir="${bakebread.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.bakebread}"/>
+      <bootclasspath refid="bakebread.module.bootclasspath"/>
+      <classpath refid="bakebread.module.production.classpath"/>
+      <src refid="bakebread.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.bakebread"/>
+    </javac>
+    
+    <copy todir="${bakebread.output.dir}">
+      <fileset dir="${module.bakebread.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.bakebread.tests" depends="compile.module.bakebread.production" description="compile module bakebread; test classes" unless="skip.tests">
+    <mkdir dir="${bakebread.testoutput.dir}"/>
+    <javac destdir="${bakebread.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.bakebread}"/>
+      <bootclasspath refid="bakebread.module.bootclasspath"/>
+      <classpath refid="bakebread.module.classpath"/>
+      <src refid="bakebread.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.bakebread"/>
+    </javac>
+    
+    <copy todir="${bakebread.testoutput.dir}">
+      <fileset dir="${module.bakebread.basedir}/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.bakebread.basedir}/testdata">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.bakebread" description="cleanup module">
+    <delete dir="${bakebread.output.dir}"/>
+    <delete dir="${bakebread.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.bakebread" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.bakebread" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.bakebread:jar" value="${basedir}/bin"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.bakebread.jar" value="${artifacts.temp.dir}/bakebread.jar"/>
+  </target>
+  
+  <target name="artifact.bakebread:jar" depends="init.artifacts, compile.module.bakebread" description="Build &#39;bakebread:jar&#39; artifact">
+    <property name="artifact.temp.output.bakebread:jar" value="${artifacts.temp.dir}/bakebread_jar"/>
+    <mkdir dir="${artifact.temp.output.bakebread:jar}"/>
+    <jar destfile="${temp.jar.path.bakebread.jar}" duplicate="preserve" filesetmanifest="merge">
+      <zipfileset dir="${bakebread.output.dir}"/>
+    </jar>
+    <copy file="${temp.jar.path.bakebread.jar}" tofile="${artifact.temp.output.bakebread:jar}/bakebread.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.bakebread:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.bakebread:jar}"/>
+    <copy todir="${artifact.output.bakebread:jar}">
+      <fileset dir="${artifact.temp.output.bakebread:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
