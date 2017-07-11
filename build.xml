@@ -115,7 +115,6 @@
   <path id="bakebread.module.test.sourcepath">
     <dirset dir="${module.bakebread.basedir}">
       <include name="test"/>
-      <include name="testdata"/>
     </dirset>
   </path>
   
@@ -152,10 +151,6 @@
     
     <copy todir="${bakebread.testoutput.dir}">
       <fileset dir="${module.bakebread.basedir}/test">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
-      <fileset dir="${module.bakebread.basedir}/testdata">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
