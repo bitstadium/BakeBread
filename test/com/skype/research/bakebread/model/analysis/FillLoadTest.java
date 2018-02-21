@@ -32,7 +32,7 @@ public class FillLoadTest extends TestCase {
 		}
 
 		@Override
-		public int getFd() {
+		public long getFd() {
 			return 0;
 		}
 
