@@ -46,7 +46,7 @@ public class MockMapInfo extends ResolvedMemArea implements MapInfo {
 	}
 
 	@Override
-	public int getFd() {
+	public long getFd() {
 		return fileName == null || fileName.isEmpty() ? 0 : fileName.hashCode();
 	}
 

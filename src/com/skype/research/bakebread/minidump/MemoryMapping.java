@@ -58,7 +58,7 @@ public class MemoryMapping implements MapInfo {
 	private final boolean readable, writable, runnable, shared;
 	private final long offset;
 	private final short[] partition = new short[2]; // unsigned byte[]
-	private final int fd;
+	private final long fd;
 	private final String name;
 	private final EnumSet<Defined> defined;
 	
@@ -74,7 +74,7 @@ public class MemoryMapping implements MapInfo {
 		offset = Long.parseLong(matcher.group(g++), 16);
 		partition[0] = Short.parseShort(matcher.group(g++), 16);
 		partition[1] = Short.parseShort(matcher.group(g++), 16);
-		fd = Integer.parseInt(matcher.group(g++));
+		fd = Long.parseLong(matcher.group(g++));
 		name = matcher.group(g); 
 		assert g == matcher.groupCount();
 		defined = EnumSet.allOf(Defined.class);
@@ -92,7 +92,7 @@ public class MemoryMapping implements MapInfo {
 				+ ' ' + PrettyPrint.printFlags(this)
 				+ ' ' + PrettyPrint.hexWordSlim(offset)
 				+ ' ' + String.format("%02x:%02x", partition[0], partition[1])
-				+ ' ' + PrettyPrint.padTo(Integer.toString(fd), 10)
+				+ ' ' + PrettyPrint.padTo(Long.toString(fd), 10)
 				+ ' ' + name;
 		defined = EnumSet.of(Defined.MEMORY, Defined.FLAGS, Defined.MODULE);
 	}
@@ -188,7 +188,7 @@ public class MemoryMapping implements MapInfo {
 	}
 	
 	@Override
-	public int getFd() {
+	public long getFd() {
 		ensure(Defined.INODE);
 		return fd;
 	}

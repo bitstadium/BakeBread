@@ -12,6 +12,6 @@ package com.skype.research.bakebread.model.memory;
 public interface MapInfo extends MemArea, MemPerm {
 	long getFileOffset();
 	short[] getPartition();
-	int getFd();
+	long getFd();
 	String getName(); // may be a file name
 }
